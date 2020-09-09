@@ -1,9 +1,14 @@
-const getApiSearchUrl = (searchTerm) =>
-  `http://openlibrary.org/search.json?q=${searchTerm}`;
+import axios from "axios";
+const getBookCoverByIsbn = (isbn, size = "M") => {
+  return `http://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg`;
+};
 
-export const getBookCoverByOLID = (olid) =>
-  `http://covers.openlibrary.org/b/olid/${olid}-M.jpg`;
+const searchBooks = async (searchTerm = "") => {
+  return await axios.get(`http://openlibrary.org/search.json?q=${searchTerm}&printType=books`);
+  
+};
 
-export const searchBooks = (searchTerm = "") => {
-  return fetch(getApiSearchUrl(searchTerm)).then((r) => r.json());
+export default {
+  searchBooks,
+  getBookCoverByIsbn,
 };

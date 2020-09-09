@@ -1,11 +1,23 @@
 import React from "react";
 import * as style from "./App.module.scss";
 import { Switch, Route } from "react-router-dom";
-import { Collections } from "./pages/Collections";
-import { BooksSearch } from "./pages/BooksSearch";
+import Collections from "./pages/Collections/collection";
+import { BooksSearch } from "./pages/BooksSearch/searchBook";
 import { Header } from "./components/Header";
+// import Home from './components/home/home';
 
+function initDefualtCollectionNames() {
+  let collectionNames = localStorage.getItem("collectionNames");
+  if (!collectionNames) {
+    let defualtCollectionNames = ["finishedBooks", "booksToRead"];
+    localStorage.setItem(
+      "collectionNames",
+      JSON.stringify(defualtCollectionNames)
+    );
+  }
+}
 const App = () => {
+  initDefualtCollectionNames();
   return (
     <div className={style.app}>
       <Header />
@@ -14,25 +26,18 @@ const App = () => {
           <Route
             exact
             path="/search"
-            render={(props) => (
-              <BooksSearch {...props} />
-            )}
+            render={(props) => <BooksSearch {...props} />}
           />
           <Route
             exact
             path="/collections"
-            render={(props) => (<Collections {...props}/>)}
+            render={(props) => <Collections {...props} />}
           />
-          <Route
-            path="/"
-            render={(props) => (
-              <BooksSearch {...props}/>
-            )}
-          />
+          <Route path="/" render={(props) => <BooksSearch {...props} />} />
         </Switch>
       </main>
     </div>
   );
-}
+};
 
 export default App;
