@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import apiData from "../../BooksApi/index";
 import "./searchBook.css";
-
-
-// get collection list from storage
-let colNames = localStorage.getItem("collectionNames");
-colNames = JSON.parse(colNames);
 
 export const BooksSearch = () => {
   const [searchTerm, onChangeTerm] = useState("");
   const [books, setBooks] = useState([]);
+  const [collectionNames, setCollectionNames] = useState([]);
 
-  const [collectionNames, setCollectionNames] = useState(colNames);
-
+  useEffect(() => {
+    // get collection list from storage
+    let colNames = localStorage.getItem("collectionNames");
+    colNames = JSON.parse(colNames);
+    colNames = colNames ? colNames :[];
+    setCollectionNames(colNames);
+  }, []);
 
   // get value from input search
   function handelChange(e) {
@@ -42,7 +43,7 @@ export const BooksSearch = () => {
     }
     console.log(books);
   }
-    // save book to collection
+  // save book to collection
   const saveBook = (bookObj, listType) => {
     console.log("click");
     console.log(bookObj.title);
