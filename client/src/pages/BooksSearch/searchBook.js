@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import apiData from "../../BooksApi/index";
 import "./searchBook.css";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 
+
+// get collection list from storage
 let colNames = localStorage.getItem("collectionNames");
 colNames = JSON.parse(colNames);
 
@@ -14,7 +13,6 @@ export const BooksSearch = () => {
 
   const [collectionNames, setCollectionNames] = useState(colNames);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   // get value from input search
   function handelChange(e) {
@@ -48,7 +46,7 @@ export const BooksSearch = () => {
   const saveBook = (bookObj, listType) => {
     console.log("click");
     console.log(bookObj.title);
-    // creat storage
+    // creat memory storage
     let bookStorage = window.localStorage;
     // update the bookKey array type evrey button choice for
     let bookKey = listType;
@@ -98,10 +96,6 @@ export const BooksSearch = () => {
         </div>
       </div>
 
-      {/* <button onClick={() => saveBook(book, "booksToRead")}>Add</button>
-      <button onClick={() => saveBook(book, "finishedBooks")}>
-        mark as read
-      </button> */}
       <p>
         {book.title},{book.first_publish_year}
       </p>

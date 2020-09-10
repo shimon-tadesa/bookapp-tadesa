@@ -5,7 +5,7 @@ function Collections() {
 
   const [userCollections, setUserCollections] = useState([]);
 
-  useEffect(() => {
+  function init() {
     let collectionNames = JSON.parse(localStorage.getItem("collectionNames"));
 
     let userCollections = [];
@@ -15,38 +15,37 @@ function Collections() {
         let bookArry = JSON.parse(localStorage.getItem(name));
         userCollections.push({
           title: name,
-          list: bookArry,
+          list: bookArry ? bookArry : [],
         });
       } catch (e) {
         console.log("list not defiend");
       }
     }
     setUserCollections(userCollections);
-
+  }
+  useEffect(() => {
+    init();
   }, []);
 
-  const deleteBook = (bookObj, listType) => {
+  const deleteBook = (bookObj, bookArrayKey) => {
     console.log(bookObj.id);
 
     //update list in local storage
-    let bookArrayKey = listType;
     let arrayFromStorage = localStorage.getItem(bookArrayKey);
     arrayFromStorage = JSON.parse(arrayFromStorage);
 
     arrayFromStorage = arrayFromStorage.filter((item) => {
-      return item.id == bookObj.id ? false : true;
+      return item.id === bookObj.id ? false : true;
     });
 
-    let a = JSON.stringify(arrayFromStorage);
-    localStorage.setItem(bookArrayKey, a);
+    localStorage.setItem(bookArrayKey, JSON.stringify(arrayFromStorage));
 
-    //update state on ui to avoid screen refresh
+
+//    update state on ui to avoid screen refresh
     let tempUserCollection = [...userCollections];
     tempUserCollection.forEach((item) => {
-      if (item.title == listType) {
-        item.list = item.list.filter((item) => {
-          return item.id == bookObj.id ? false : true;
-        });
+      if (item.title === bookArrayKey) {
+        item.list= arrayFromStorage;
       }
     });
     setUserCollections(tempUserCollection);
@@ -56,13 +55,28 @@ function Collections() {
 
   const createCollection = () => {
     console.log("click to create");
-
     let collectionsArray = JSON.parse(localStorage.getItem("collectionNames"));
     collectionsArray.push(collectionName);
     localStorage.setItem("collectionNames", JSON.stringify(collectionsArray));
+    // reset input field
     setCollctionName("");
+    init();
   };
 
+  const deleteCollection = (bookKey) => {
+    //1. remove list name from collectionNames in local storage
+    let allCollection = JSON.parse(localStorage.getItem("collectionNames"));
+    let index = allCollection.indexOf(bookKey);
+    allCollection.splice(index, 1);
+    let a = JSON.stringify(allCollection);
+    localStorage.setItem("collectionNames", a);
+
+    // 2. remove list array from local storage
+    let dCollection = localStorage.removeItem(bookKey);
+
+    init();
+    console.log(dCollection);
+  };
 
   return (
     <section>
@@ -81,9 +95,11 @@ function Collections() {
           <div class="collection-container">
             <div>
               <h1>{item.title}</h1>
-              <button>delete list</button>
+              <button onClick={() => deleteCollection(item.title)}>
+                delete list
+              </button>
             </div>
-            <div>
+            <div className="listNames">
               {item.list.map((book, index) => {
                 return (
                   <div className="libraryBooks" key={index}>
@@ -96,7 +112,6 @@ function Collections() {
                     </button>
                   </div>
                 );
-              
               })}
             </div>
           </div>
