@@ -6,6 +6,7 @@ import { BooksSearch } from "./pages/BooksSearch/searchBook";
 import { Header } from "./components/Header";
 // import Home from './components/home/home';
 
+// defulualte collcetion even if deleted evrey collections
 function initDefualtCollectionNames() {
   let collectionNames = localStorage.getItem("collectionNames");
   if (!collectionNames) {

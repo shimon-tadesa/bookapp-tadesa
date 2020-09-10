@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function Collections() {
   const [collectionName, setCollctionName] = useState("");
+  const [newCollectionName, setNewCollectionName] = useState("");
 
   const [userCollections, setUserCollections] = useState([]);
 
@@ -40,16 +41,15 @@ function Collections() {
 
     localStorage.setItem(bookArrayKey, JSON.stringify(arrayFromStorage));
 
-
-//    update state on ui to avoid screen refresh
+    //    update state on ui to avoid screen refresh
     let tempUserCollection = [...userCollections];
     tempUserCollection.forEach((item) => {
       if (item.title === bookArrayKey) {
-        item.list= arrayFromStorage;
+        item.list = arrayFromStorage;
       }
     });
     setUserCollections(tempUserCollection);
-
+    // init();
     console.log(arrayFromStorage);
   };
 
@@ -78,6 +78,46 @@ function Collections() {
     console.log(dCollection);
   };
 
+  const renameCollection = (bookKey) => {
+    //1. update collection names
+    let allCollection = JSON.parse(localStorage.getItem("collectionNames"));
+    let arrIndex = allCollection.indexOf(bookKey);
+    allCollection.splice(arrIndex, 1);
+    allCollection.push(newCollectionName);
+    let ncollectionNames = JSON.stringify(allCollection);
+    localStorage.setItem("collectionNames", ncollectionNames);
+
+    // create new array and remove old one
+    let bookArrayString = localStorage.getItem(bookKey);
+    localStorage.removeItem(bookKey);
+    localStorage.setItem(newCollectionName, bookArrayString);
+
+    init();
+    setNewCollectionName("");
+  };
+
+  function showHideDropDown(event) {
+    let el = event.target.parentElement.querySelector(".myDropdown");
+    el.classList.toggle("show");
+  }
+  const onBookMove = (currentList, targetList, book) => {
+    console.log(currentList + targetList + book);
+
+    // 1.remove book from current list array
+    let currentListArray = JSON.parse(localStorage.getItem(currentList));
+    currentListArray = currentListArray.filter((item) => {
+      return item.id == book.id ? false : true;
+    });
+    localStorage.setItem(currentList, JSON.stringify(currentListArray));
+
+    //2. get target list array turn to js object push book convert string update local storage
+    let targetListArray = JSON.parse(localStorage.getItem(targetList));
+    targetListArray = targetListArray ? targetListArray : [];
+    targetListArray.push(book);
+    localStorage.setItem(targetList, JSON.stringify(targetListArray));
+    init();
+  };
+
   return (
     <section>
       <button onClick={createCollection}>Create Collction</button>
@@ -90,11 +130,19 @@ function Collections() {
         }}
       />
 
-      {userCollections.map((item) => {
+      {userCollections.map((item, index) => {
         return (
-          <div class="collection-container">
+          <div className="collection-container" key={index}>
             <div>
               <h1>{item.title}</h1>
+              <button onClick={() => renameCollection(item.title)}>
+                Rename
+              </button>
+              <input
+                type="text"
+                value={newCollectionName}
+                onChange={(e) => setNewCollectionName(e.target.value)}
+              />
               <button onClick={() => deleteCollection(item.title)}>
                 delete list
               </button>
@@ -110,6 +158,26 @@ function Collections() {
                     <button onClick={() => deleteBook(book, item.title)}>
                       Delete Book
                     </button>
+                    <button
+                      onClick={(event) => showHideDropDown(event)}
+                      className=""
+                    >
+                      move book
+                    </button>
+                    <div className="myDropdown dropdown-content">
+                      {userCollections.map((listObj, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={(e) =>
+                              onBookMove(item.title, listObj.title, book)
+                            }
+                          >
+                            {listObj.title}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 );
               })}

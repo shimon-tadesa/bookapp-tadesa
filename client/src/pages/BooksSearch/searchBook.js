@@ -20,13 +20,13 @@ export const BooksSearch = () => {
     onChangeTerm(a);
     console.log(a);
   }
-
+  // get books by searchTerms
   async function handelSubmit(e) {
     e.preventDefault();
     try {
       const response = await apiData.searchBooks(searchTerm);
       let data = response.data.docs;
-      // clean and format data
+      // clean and format data and return data with pic
       data = data.filter((item) => {
         return item.cover_i ? true : false;
       });
@@ -42,17 +42,16 @@ export const BooksSearch = () => {
     }
     console.log(books);
   }
-
+    // save book to collection
   const saveBook = (bookObj, listType) => {
     console.log("click");
     console.log(bookObj.title);
     // creat memory storage
     let bookStorage = window.localStorage;
-    // update the bookKey array type evrey button choice for
-    let bookKey = listType;
 
-    //  get book from local storage
-    let bookArray = bookStorage.getItem(bookKey);
+    //  get array book from local storage
+    let bookArray = bookStorage.getItem(listType);
+
     //if empty set empty array oterwise convert to js object
     if (bookArray) {
       bookArray = JSON.parse(bookArray);
@@ -63,7 +62,7 @@ export const BooksSearch = () => {
     bookArray.push(bookObj);
 
     //convert array to string and save to local storage
-    bookStorage.setItem(bookKey, JSON.stringify(bookArray));
+    bookStorage.setItem(listType, JSON.stringify(bookArray));
   };
 
   function onListSelect(book, listName, event) {
