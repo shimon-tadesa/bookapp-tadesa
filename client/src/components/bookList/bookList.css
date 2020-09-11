@@ -1,11 +1,10 @@
 .book-list {
   display: flex;
   overflow: scroll;
+  justify-content: center;
 }
 
 .book-list .book {
-    margin-left: 10px;
-    margin-bottom: 20px;
+  margin-left: 10px;
+  margin-bottom: 20px;
 }
-
-
