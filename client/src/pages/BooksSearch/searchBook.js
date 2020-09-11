@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import apiData from "../../BooksApi/index";
 import "./searchBook.css";
+import Book from "../../components/book/book";
 
 export const BooksSearch = () => {
-  const [searchTerm, onChangeTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
   const [collectionNames, setCollectionNames] = useState([]);
 
@@ -11,18 +12,17 @@ export const BooksSearch = () => {
     // get collection list from storage
     let colNames = localStorage.getItem("collectionNames");
     colNames = JSON.parse(colNames);
-    colNames = colNames ? colNames :[];
+    colNames = colNames ? colNames : [];
     setCollectionNames(colNames);
   }, []);
 
   // get value from input search
-  function handelChange(e) {
-    let a = e.target.value;
-    onChangeTerm(a);
-    console.log(a);
-  }
+  const onSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   // get books by searchTerms
-  async function handelSubmit(e) {
+  async function search(e) {
     e.preventDefault();
     try {
       const response = await apiData.searchBooks(searchTerm);
@@ -43,13 +43,12 @@ export const BooksSearch = () => {
     }
     console.log(books);
   }
+
   // save book to collection
-  const saveBook = (bookObj, listType) => {
-    console.log("click");
+  const addBookToList = (bookObj, listType) => {
     console.log(bookObj.title);
     // creat memory storage
     let bookStorage = window.localStorage;
-
     //  get array book from local storage
     let bookArray = bookStorage.getItem(listType);
 
@@ -66,50 +65,28 @@ export const BooksSearch = () => {
     bookStorage.setItem(listType, JSON.stringify(bookArray));
   };
 
-  function onListSelect(book, listName, event) {
-    console.log("on add to list :" + listName);
-    saveBook(book, listName);
-    let el = event.target.parentElement;
-    el.classList.toggle("show");
-  }
+  const allBookLists = collectionNames.map((title) => {
+    return { title };
+  });
 
-  function myFunction(event) {
-    let el = event.target.parentElement.querySelector("div");
-    el.classList.toggle("show");
-  }
-
-  let arrayBooks = books.map((book, index) => (
-    <div key={index} className="book-card">
-      <img src={book.coverImageUrl} alt="some img" />
-      <div className="dropdown">
-        <button onClick={(event) => myFunction(event)} className="dropbtn">
-          add book
-        </button>
-        <div className="myDropdown" className="dropdown-content">
-          {collectionNames.map((listName, index) => {
-            return (
-              <div key={index} onClick={(e) => onListSelect(book, listName, e)}>
-                {listName}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <p>
-        {book.title},{book.first_publish_year}
-      </p>
-    </div>
-  ));
   return (
     <div className="search-page">
       <section>
         <h1>Search books</h1>
-        <form action="" onSubmit={handelSubmit} id="input-boxx">
-          <input type="text" onChange={handelChange} id="input-feld" />
+        <form action="" onSubmit={search} id="input-boxx">
+          <input type="text" onChange={onSearchTermChange} id="input-feld" />
         </form>
       </section>
-      <div className="results">{arrayBooks}</div>
+      <div className="results">
+        {books.map((book, index) => (
+          <Book
+            key={index}
+            bookData={book}
+            onAddBook={addBookToList}
+            allBookLists={allBookLists}
+          />
+        ))}
+      </div>
     </div>
   );
 };
