@@ -3,40 +3,39 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Book from "../book/book.js";
 import "./bookList.css";
+import tools from "./../../route/tools";
 
 function BookList(props) {
   const [newListName, setNewListName] = useState("");
-  // prop.bookList
-  //propd.allBookLists
+
+ 
 
   const moveBook = (currentList, targetList, book) => {
     console.log(currentList + targetList + book);
 
     // 1.remove book from current list array
-    let currentListArray = JSON.parse(localStorage.getItem(currentList));
+    let currentListArray = tools.readFromLocalStorage(currentList);
     currentListArray = currentListArray.filter((item) => {
-      return item.id == book.id ? false : true;
+      return item.id === book.id ? false : true;
     });
-    localStorage.setItem(currentList, JSON.stringify(currentListArray));
+    
+    tools.setToLocalStorage(currentList,currentListArray);
 
     //2. get target list array turn to js object push book convert string update local storage
-    let targetListArray = JSON.parse(localStorage.getItem(targetList));
+    let targetListArray = tools.readFromLocalStorage(targetList);
     targetListArray = targetListArray ? targetListArray : [];
     targetListArray.push(book);
-    localStorage.setItem(targetList, JSON.stringify(targetListArray));
+    tools.setToLocalStorage(targetList,targetListArray);
     props.onListChange();
   };
   const deleteBook = (bookArrayKey, book) => {
     //update list in local storage
-    let arrayFromStorage = localStorage.getItem(bookArrayKey);
-    arrayFromStorage = JSON.parse(arrayFromStorage);
-
+    let arrayFromStorage = tools.readFromLocalStorage(bookArrayKey);
     arrayFromStorage = arrayFromStorage.filter((item) => {
       return item.id === book.id ? false : true;
     });
 
-    localStorage.setItem(bookArrayKey, JSON.stringify(arrayFromStorage));
-
+   tools.setToLocalStorage(bookArrayKey,arrayFromStorage);
     props.onListChange();
   };
 
@@ -46,7 +45,6 @@ function BookList(props) {
         <div>
           <div>
             <h1>{props.bookList.title}</h1>
-            {/* <CreateIcon /> */}
             <button
               onClick={() =>
                 props.onListRename(props.bookList.title, newListName)

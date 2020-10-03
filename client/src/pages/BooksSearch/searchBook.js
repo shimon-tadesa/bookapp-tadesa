@@ -2,80 +2,91 @@ import React, { useState, useEffect } from "react";
 import apiData from "../../BooksApi/index";
 import "./searchBook.css";
 import Book from "../../components/book/book";
-
+import tools from "./../../route/tools";
+import Pagination from "react-js-pagination";
 export const BooksSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
   const [collectionNames, setCollectionNames] = useState([]);
 
+  const [activePage, setActivetPage] = useState(1); // page 
+  const [booksCount, setBookCount] = useState(0); // data length
+  const bucketSize = 20; // page books size
+
   useEffect(() => {
-    // get collection list from storage
-    let colNames = localStorage.getItem("collectionNames");
-    colNames = JSON.parse(colNames);
+    let colNames = tools.readFromLocalStorage("collectionNames");
     colNames = colNames ? colNames : [];
     setCollectionNames(colNames);
   }, []);
 
-  // get value from input search
-  const onSearchTermChange = (e) => {
+  const onSearchTermChange = (e) => {// input value
     setSearchTerm(e.target.value);
   };
 
-  // get books by searchTerms
-  async function search(e) {
-    e.preventDefault();
+  const handlePageChange = (pageNumber) => { // update and change the page 
+    console.log(`active page is ${pageNumber}`);
+    setActivetPage(pageNumber);
+
+    searchBook(searchTerm, pageNumber); //call this function and get new data when page changes
+  };
+
+  const clearFiled = () => {
+    document.getElementById("input-feld").value = "";
+  };
+
+  async function searchBook(searchTerm, page) {
     try {
-      const response = await apiData.searchBooks(searchTerm);
-      let data = response.data.docs;
-      // clean and format data and return data with pic
-      data = data.filter((item) => {
-        return item.cover_i ? true : false;
-      });
-
-      data.forEach((item, index) => {
-        item.coverImageUrl = `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg`;
-        item.id = new Date() + index;
-      });
-
-      setBooks(data);
+      const data = await apiData.searchBooks(searchTerm, page);
+      console.log(data);
+      setBooks(data.books);
+      setBookCount(data.numOfBooks);
     } catch (error) {
       console.log("error");
     }
     console.log(books);
   }
 
-  // save book to collection
-  const addBookToList = (bookObj, listType) => {
-    console.log(bookObj.title);
-    // creat memory storage
-    let bookStorage = window.localStorage;
-    //  get array book from local storage
-    let bookArray = bookStorage.getItem(listType);
+  async function search(e) {// get books from api 
+    e.preventDefault();
+    searchBook(searchTerm, 1); // first time 
+  }
 
-    //if empty set empty array oterwise convert to js object
-    if (bookArray) {
-      bookArray = JSON.parse(bookArray);
-    } else {
+  const addBookToList = (bookObj, listName) => {
+    let bookArray = tools.readFromLocalStorage(listName);
+    if (!bookArray) {
       bookArray = [];
     }
 
-    bookArray.push(bookObj);
+    if (bookArray) {
+      console.log(bookArray);
+      let isBookExist = bookArray.find((theBook) => theBook.id === bookObj.id);
+      if (isBookExist) {
+        alert("book is already exist");
+      } else {
+        bookArray.push(bookObj);
+      }
+    }
 
-    //convert array to string and save to local storage
-    bookStorage.setItem(listType, JSON.stringify(bookArray));
+    tools.setToLocalStorage(listName, bookArray);
   };
 
-  const allBookLists = collectionNames.map((title) => {
+  const allCollectionNames = collectionNames.map((title) => {
     return { title };
   });
 
   return (
     <div className="search-page">
       <section>
-        <h1>Search books</h1>
-        <form action="" onSubmit={search} id="input-boxx">
-          <input type="text" onChange={onSearchTermChange} id="input-feld" />
-        </form>
+        <h1>Search Your Book</h1>
+        <div id="input-boxx">
+          <input
+            type="text"
+            onChange={onSearchTermChange}
+            id="input-feld"
+            onFocus={clearFiled}
+          />
+          <button id="search-button" onClick={search}>Search</button>
+        </div>
       </section>
       <div className="results">
         {books.map((book, index) => (
@@ -83,10 +94,20 @@ export const BooksSearch = () => {
             key={index}
             bookData={book}
             onAddBook={addBookToList}
-            allBookLists={allBookLists}
+            allBookLists={allCollectionNames}
           />
         ))}
       </div>
+
+      {books.length > 0 && (
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={bucketSize}
+          totalItemsCount={booksCount}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

@@ -14,6 +14,8 @@
     cursor: pointer;
     width: 100%;
     border-radius: 8px;
+    bottom: 60px;
+    position: relative;
   }
   
   /* Dropdown button on hover & focus */
@@ -62,3 +64,24 @@
   .show {
     display: block;
   }
+
+
+  #book-ditel{
+    font-size: 13px;
+    position: relative;
+    bottom: 108px;
+    right: 33px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #book-ditel li {
+  border: none;
+  color: rgb(10, 9, 9);
+  font-weight: bold;
+  }
+
+  #book-ditel li:hover{
+    color: rgb(3, 3, 3);
+    }

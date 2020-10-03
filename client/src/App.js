@@ -4,21 +4,14 @@ import { Switch, Route } from "react-router-dom";
 import Collections from "./pages/Collections/collection";
 import { BooksSearch } from "./pages/BooksSearch/searchBook";
 import { Header } from "./components/Header";
-// import Home from './components/home/home';
+import tools from "./route/tools";
+import Loading from "./route/loading/loading";
 
-// defulualte collcetion even if deleted evrey collections
-function initDefualtCollectionNames() {
-  let collectionNames = localStorage.getItem("collectionNames");
-  if (!collectionNames) {
-    let defualtCollectionNames = ["finishedBooks", "booksToRead"];
-    localStorage.setItem(
-      "collectionNames",
-      JSON.stringify(defualtCollectionNames)
-    );
-  }
-}
+
 const App = () => {
-  initDefualtCollectionNames();
+  
+  // defulualte collcetion even if deleted evrey collections
+  tools.initDefualtCollectionNames();
   return (
     <div className={style.app}>
       <Header />
@@ -37,6 +30,8 @@ const App = () => {
           <Route path="/" render={(props) => <BooksSearch {...props} />} />
         </Switch>
       </main>
+      <Loading />
+      
     </div>
   );
 };

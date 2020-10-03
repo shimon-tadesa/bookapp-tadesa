@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import BookList from "../../components/bookList/bookList";
+import tools from "./../../route/tools";
 
 function Collections() {
   const [collectionName, setCollctionName] = useState("");
   const [userCollections, setUserCollections] = useState([]);
 
   function init() {
-    let collectionNames = JSON.parse(localStorage.getItem("collectionNames"));
+    let collectionNames = tools.readFromLocalStorage("collectionNames");
 
     let userCollections = [];
 
     for (let name of collectionNames) {
       try {
-        let bookArry = JSON.parse(localStorage.getItem(name));
+        let bookArry = tools.readFromLocalStorage(name);
         userCollections.push({
           title: name,
-          list: bookArry ? bookArry : [],
+          list: bookArry ? bookArry  : [],
         });
       } catch (e) {
         console.log("list not defiend");
@@ -29,42 +30,40 @@ function Collections() {
 
   const createCollection = () => {
     console.log("click to create");
-    let collectionsArray = JSON.parse(localStorage.getItem("collectionNames"));
+    let collectionsArray = tools.readFromLocalStorage("collectionNames");
     collectionsArray.push(collectionName);
-    localStorage.setItem("collectionNames", JSON.stringify(collectionsArray));
-    // reset input field
+    tools.setToLocalStorage("collectionNames", collectionsArray);
+    // tools.setToLocalStorage(collectionName, "[]");
     setCollctionName("");
     init();
   };
 
-  const deleteCollection = (bookKey) => {
+  const deleteCollection = (listName) => {
     //1. remove list name from collectionNames in local storage
-    let allCollection = JSON.parse(localStorage.getItem("collectionNames"));
-    let index = allCollection.indexOf(bookKey);
+    let allCollection = tools.readFromLocalStorage("collectionNames");
+    let index = allCollection.indexOf(listName);
     allCollection.splice(index, 1);
-    let a = JSON.stringify(allCollection);
-    localStorage.setItem("collectionNames", a);
+    console.log(allCollection);
+    tools.setToLocalStorage("collectionNames", allCollection);
 
     // 2. remove list array from local storage
-    let dCollection = localStorage.removeItem(bookKey);
+    tools.removeFromLocalStorage(listName);
 
     init();
-    console.log(dCollection);
   };
 
   const renameCollection = (bookKey, newName) => {
     //1. update collection names
-    let allCollection = JSON.parse(localStorage.getItem("collectionNames"));
+    let allCollection = tools.readFromLocalStorage("collectionNames");
     let arrIndex = allCollection.indexOf(bookKey);
     allCollection.splice(arrIndex, 1);
     allCollection.push(newName);
-    let ncollectionNames = JSON.stringify(allCollection);
-    localStorage.setItem("collectionNames", ncollectionNames);
+    tools.setToLocalStorage("collectionNames", allCollection);
 
     // create new array and remove old one
-    let bookArrayString = localStorage.getItem(bookKey);
-    localStorage.removeItem(bookKey);
-    localStorage.setItem(newName, bookArrayString);
+    let bookArrayObj =tools.readFromLocalStorage(bookKey);
+    tools.removeFromLocalStorage(bookKey);
+    tools.setToLocalStorage(newName,bookArrayObj);
 
     init();
   };

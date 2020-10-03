@@ -19,8 +19,12 @@
   margin-right: 17px;
 }
 
-#input-boxx {
-  background-color: gold;
+#search-button {
+  background-color: white;
+  padding: 4px;
+  position: relative;
+  left: 20px;
+  border-radius: 8px;
 }
 
 #input-feld {
@@ -41,8 +45,6 @@
   margin-right: 15px;
 }
 
-
-
 .collection-container {
   border: 1px solid black;
   margin-bottom: 20px;
@@ -58,3 +60,35 @@
   border: 1px solid black;
   pointer-events: all;
 }
+
+.pagination {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+}
+.pagination li {
+  border: 1px solid black;
+  padding: 10px;
+}
+.pagination li.active {
+  background-color: red;
+}
+
+.pagination li a {
+  text-decoration: none;
+}
+
+
+
+/* style cop */
+/* .pagination > li > a, .pagination > li > span {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  text-decoration: none;
+  color: #337ab7;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-left: -1px;
+} */

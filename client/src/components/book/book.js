@@ -11,15 +11,17 @@ function Book(props) {
     );
     el.classList.toggle("show");
   }
+  ///_____
 
   return (
     <div className="book">
       <img src={book.coverImageUrl} alt="someimg" />
-      <p>
-        {book.title} {book.first_publish_year}
-      </p>
+      <ul id="book-ditel">
+        <li>name:{book.title}</li>
+        <li>Year: {book.first_publish_year}</li>
+        <li>Author: {book.author_name}</li>
+      </ul>
 
-      {/* handle delete and handle book move to another list */}
       {props.editMode ? (
         <div>
           <button
@@ -31,23 +33,27 @@ function Book(props) {
             move book
           </button>
           <div className="myDropdown dropdown-content">
-            {props.allBookLists.map((listObj, index) => {
+            {props.allBookLists.map((listBooksArray, index) => {
               return (
                 <div
                   key={index}
                   onClick={(e) => {
-                    props.onBookMove(props.bookList.title, listObj.title, book);
+                    props.onBookMove(
+                      props.bookList.title,
+                      listBooksArray.title,
+                      book
+                    );
                     showHideDropDown(e);
                   }}
                 >
-                  {listObj.title}
+                  {listBooksArray.title}
                 </div>
               );
             })}
           </div>
         </div>
       ) : (
-        // handle adding book to a list
+        // handle adding book to a list home search
         <div className="dropdown">
           <button
             onClick={(event) => showHideDropDown(event)}
@@ -56,16 +62,16 @@ function Book(props) {
             add book
           </button>
           <div className=" myDropdown dropdown-content">
-            {props.allBookLists.map((listObj, index) => {
+            {props.allBookLists.map((listBooksArray, index) => {
               return (
                 <div
                   key={index}
                   onClick={(e) => {
-                    props.onAddBook(book, listObj.title);
+                    props.onAddBook(book, listBooksArray.title);
                     showHideDropDown(e);
                   }}
                 >
-                  {listObj.title}
+                  {listBooksArray.title}
                 </div>
               );
             })}
