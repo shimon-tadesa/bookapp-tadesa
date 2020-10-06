@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import apiData from "../../BooksApi/index";
 import "./searchBook.css";
 import Book from "../../components/book/book";
-import tools from "./../../route/tools";
-import Pagination from "react-js-pagination";
-export const BooksSearch = () => {
+import Input from "@material-ui/core/Input";
+import Pagination from "@material-ui/lab/Pagination";
+import Button from "@material-ui/core/Button";
+import SmenuButton from "./../../components/SMenuButton/SMenuButton";
+
+export const BooksSearch = (props) => {
+  const dataStore = props.dataStore;
+  const ontDataStoreChange = props.ontDataStoreChange;
+
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
-  const [collectionNames, setCollectionNames] = useState([]);
 
-  const [activePage, setActivetPage] = useState(1); // page 
-  const [booksCount, setBookCount] = useState(0); // data length
-  const bucketSize = 20; // page books size
+  const [activePage, setActivetPage] = useState(1);
+  const [booksCount, setBookCount] = useState(0);
+  const bucketSize = 20;
 
-  useEffect(() => {
-    let colNames = tools.readFromLocalStorage("collectionNames");
-    colNames = colNames ? colNames : [];
-    setCollectionNames(colNames);
-  }, []);
-
-  const onSearchTermChange = (e) => {// input value
+  const onSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handlePageChange = (pageNumber) => { // update and change the page 
-    console.log(`active page is ${pageNumber}`);
-    setActivetPage(pageNumber);
-
-    searchBook(searchTerm, pageNumber); //call this function and get new data when page changes
+  const handlePageChange = (event, value) => {
+    setActivetPage(value);
+    console.log(`active page is ${value}`);
+    searchBook(searchTerm, value);
+    document.documentElement.scrollTop = 0;
   };
 
   const clearFiled = () => {
@@ -36,6 +35,7 @@ export const BooksSearch = () => {
 
   async function searchBook(searchTerm, page) {
     try {
+      setBooks([]);
       const data = await apiData.searchBooks(searchTerm, page);
       console.log(data);
       setBooks(data.books);
@@ -46,66 +46,69 @@ export const BooksSearch = () => {
     console.log(books);
   }
 
-  async function search(e) {// get books from api 
-    e.preventDefault();
-    searchBook(searchTerm, 1); // first time 
+  async function search(e) {
+    searchBook(searchTerm, 1);
   }
 
-  const addBookToList = (bookObj, listName) => {
-    let bookArray = tools.readFromLocalStorage(listName);
-    if (!bookArray) {
-      bookArray = [];
+  const addBookToList = (book, listName) => {
+    let bookArray = dataStore[listName];
+    console.log(bookArray);
+    let isBookExist = bookArray.find((theBook) => theBook.id === book.id);
+    if (isBookExist) {
+      alert("book is already exist");
+    } else {
+      bookArray.push(book);
     }
-
-    if (bookArray) {
-      console.log(bookArray);
-      let isBookExist = bookArray.find((theBook) => theBook.id === bookObj.id);
-      if (isBookExist) {
-        alert("book is already exist");
-      } else {
-        bookArray.push(bookObj);
-      }
-    }
-
-    tools.setToLocalStorage(listName, bookArray);
+    ontDataStoreChange(dataStore);
   };
 
-  const allCollectionNames = collectionNames.map((title) => {
-    return { title };
+  const collectionNames = dataStore.collectionNames.map((title) => {
+    return title;
   });
 
   return (
     <div className="search-page">
       <section>
-        <h1>Search Your Book</h1>
-        <div id="input-boxx">
-          <input
-            type="text"
-            onChange={onSearchTermChange}
-            id="input-feld"
-            onFocus={clearFiled}
-          />
-          <button id="search-button" onClick={search}>Search</button>
-        </div>
+        <h1 id="header">Book App</h1>
+        <Input
+          type="text"
+          onChange={onSearchTermChange}
+          id="input-feld"
+          onFocus={clearFiled}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              search(e);
+            }
+          }}
+          placeholder="Search Book"
+        />
+        <Button variant="contained" id="search-button" onClick={search}>
+          Search
+        </Button>
       </section>
+
       <div className="results">
         {books.map((book, index) => (
-          <Book
-            key={index}
-            bookData={book}
-            onAddBook={addBookToList}
-            allBookLists={allCollectionNames}
-          />
+          <Book key={index} bookData={book}>
+            <SmenuButton
+              options={collectionNames}
+              onMenuSelect={(selectedOption) => {
+                addBookToList(book, selectedOption);
+              }}
+            >
+              Add Book
+            </SmenuButton>
+          </Book>
         ))}
       </div>
 
       {books.length > 0 && (
         <Pagination
-          activePage={activePage}
-          itemsCountPerPage={bucketSize}
-          totalItemsCount={booksCount}
-          pageRangeDisplayed={5}
+          page={activePage}
+          count={Math.ceil(booksCount / bucketSize)}
+          color="primary"
           onChange={handlePageChange}
+          className="search-pagination"
         />
       )}
     </div>

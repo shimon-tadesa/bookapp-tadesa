@@ -1,82 +1,92 @@
 import React, { useState, useEffect } from "react";
 import BookList from "../../components/bookList/bookList";
-import tools from "./../../route/tools";
+import Input from "@material-ui/core/Input";
+import Button from '@material-ui/core/Button';
 
-function Collections() {
-  const [collectionName, setCollctionName] = useState("");
+
+function Collections(props) {
+  const dataStore = props.dataStore;
+  const ontDataStoreChange = props.ontDataStoreChange;
+  const [newCollectionName, setNewCollctionName] = useState("");
   const [userCollections, setUserCollections] = useState([]);
 
   function init() {
-    let collectionNames = tools.readFromLocalStorage("collectionNames");
-
+    let collectionNames = dataStore.collectionNames;
     let userCollections = [];
 
-    for (let name of collectionNames) {
-      try {
-        let bookArry = tools.readFromLocalStorage(name);
-        userCollections.push({
-          title: name,
-          list: bookArry ? bookArry  : [],
-        });
-      } catch (e) {
-        console.log("list not defiend");
-      }
+    for (let collectionName of collectionNames) {
+      let bookArry = dataStore[collectionName];
+      userCollections.push({
+        title: collectionName,
+        list: bookArry,
+      });
     }
     setUserCollections(userCollections);
   }
-  useEffect(() => {
+
+  useEffect(() => {    
     init();
-  }, []);
+  }, [props.dataStore]);
 
   const createCollection = () => {
     console.log("click to create");
-    let collectionsArray = tools.readFromLocalStorage("collectionNames");
-    collectionsArray.push(collectionName);
-    tools.setToLocalStorage("collectionNames", collectionsArray);
-    // tools.setToLocalStorage(collectionName, "[]");
-    setCollctionName("");
-    init();
+    let collectionsArray = dataStore.collectionNames;
+    collectionsArray.push(newCollectionName);
+    dataStore[newCollectionName] = [];
+    ontDataStoreChange(dataStore);
   };
 
-  const deleteCollection = (listName) => {
-    //1. remove list name from collectionNames in local storage
-    let allCollection = tools.readFromLocalStorage("collectionNames");
-    let index = allCollection.indexOf(listName);
+  const deleteCollection = (collectionName) => {
+    let allCollection = dataStore.collectionNames;
+    let index = allCollection.indexOf(collectionName);
     allCollection.splice(index, 1);
     console.log(allCollection);
-    tools.setToLocalStorage("collectionNames", allCollection);
 
-    // 2. remove list array from local storage
-    tools.removeFromLocalStorage(listName);
-
-    init();
+    delete dataStore[collectionName];
+    ontDataStoreChange(dataStore);
   };
 
-  const renameCollection = (bookKey, newName) => {
-    //1. update collection names
-    let allCollection = tools.readFromLocalStorage("collectionNames");
-    let arrIndex = allCollection.indexOf(bookKey);
+  const renameCollection = (collectionName, newName) => {
+    let allCollection = dataStore.collectionNames;
+    let arrIndex = allCollection.indexOf(collectionName);
     allCollection.splice(arrIndex, 1);
     allCollection.push(newName);
-    tools.setToLocalStorage("collectionNames", allCollection);
 
-    // create new array and remove old one
-    let bookArrayObj =tools.readFromLocalStorage(bookKey);
-    tools.removeFromLocalStorage(bookKey);
-    tools.setToLocalStorage(newName,bookArrayObj);
+    let booksArray = dataStore[collectionName];
+    delete dataStore[collectionName];
+    dataStore[newName] = booksArray;
 
-    init();
+    ontDataStoreChange(dataStore);
+  };
+
+  const moveBook = (currentList, targetList, book) => {
+    let currentListArray = dataStore[currentList];
+    dataStore[currentList] = currentListArray.filter((item) => {
+      return item.id === book.id ? false : true;
+    });
+    let targetListArray = dataStore[targetList];
+    targetListArray.push(book);
+    ontDataStoreChange(dataStore);
+  };
+
+  const deleteBook = (bookArrayKey, book) => {
+    let arrayFromStorage = dataStore[bookArrayKey];
+    dataStore[bookArrayKey] = arrayFromStorage.filter((item) => {
+      return item.id === book.id ? false : true;
+    });
+
+    ontDataStoreChange(dataStore);
   };
 
   return (
-    <section>
-      <button onClick={createCollection}>Create Collction</button>
+    <div className="collection-page">
+      <Button color="primary" onClick={createCollection}>Create Collction</Button>
 
-      <input
-        value={collectionName}
+      <Input
+        value={newCollectionName}
         type="text"
         onChange={(event) => {
-          setCollctionName(event.target.value);
+          setNewCollctionName(event.target.value);
         }}
       />
 
@@ -88,12 +98,16 @@ function Collections() {
               allBookLists={userCollections}
               onListRename={renameCollection}
               onListDelete={deleteCollection}
-              onListChange={init}
+              onBookDelete={deleteBook}
+              onMoveBook={moveBook}
+               
+              
             />
+
           </div>
         );
       })}
-    </section>
+    </div>
   );
 }
 

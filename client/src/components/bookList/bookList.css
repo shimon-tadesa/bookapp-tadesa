@@ -1,10 +1,19 @@
 .book-list {
   display: flex;
-  overflow: scroll;
+  overflow-x: auto;
   justify-content: center;
 }
 
 .book-list .book {
   margin-left: 10px;
   margin-bottom: 20px;
+}
+
+.btn-group {
+  display: flex;
+}
+
+.btn-group .MuiButton-containedPrimary {
+  font-size: 8px;
+  margin-right: 5px;
 }

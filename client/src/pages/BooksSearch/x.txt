@@ -1,0 +1,8 @@
+x= {
+name:"asher",
+tadesa:"koko",
+hjghg:"""
+}
+
+
+x["name"]="yosi"
