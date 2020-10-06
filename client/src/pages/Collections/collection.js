@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BookList from "../../components/bookList/bookList";
 import Input from "@material-ui/core/Input";
-import Button from '@material-ui/core/Button';
-
+import Button from "@material-ui/core/Button";
 
 function Collections(props) {
   const dataStore = props.dataStore;
@@ -24,11 +23,12 @@ function Collections(props) {
     setUserCollections(userCollections);
   }
 
-  useEffect(() => {    
+  useEffect(() => {
     init();
   }, [props.dataStore]);
 
   const createCollection = () => {
+    if (!newCollectionName) return;
     console.log("click to create");
     let collectionsArray = dataStore.collectionNames;
     collectionsArray.push(newCollectionName);
@@ -47,6 +47,7 @@ function Collections(props) {
   };
 
   const renameCollection = (collectionName, newName) => {
+    if (!newName) return;
     let allCollection = dataStore.collectionNames;
     let arrIndex = allCollection.indexOf(collectionName);
     allCollection.splice(arrIndex, 1);
@@ -80,7 +81,9 @@ function Collections(props) {
 
   return (
     <div className="collection-page">
-      <Button color="primary" onClick={createCollection}>Create Collction</Button>
+      <Button color="primary" onClick={createCollection}>
+        Create Collction
+      </Button>
 
       <Input
         value={newCollectionName}
@@ -100,10 +103,7 @@ function Collections(props) {
               onListDelete={deleteCollection}
               onBookDelete={deleteBook}
               onMoveBook={moveBook}
-               
-              
             />
-
           </div>
         );
       })}

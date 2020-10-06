@@ -4,8 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Collections from "./pages/Collections/collection";
 import { BooksSearch } from "./pages/BooksSearch/searchBook";
 import { Header } from "./components/Header";
-import tools from "./route/tools.js";
-import Loading from "./route/loading/loading";
+import Loading from "./components/loading/loading";
 
 const App = () => {
   const [dataStore, _setDataStore] = useState({ collectionNames: [] });
@@ -23,6 +22,18 @@ const App = () => {
     console.log("updated");
   };
 
+  function initDefualtCollectionNames() {
+    let collectionNames = localStorage.getItem("collectionNames");
+    if (!collectionNames) {
+      let defualtCollectionNames = ["finishedBooks", "booksToRead"];
+      localStorage.setItem(
+        "collectionNames",
+        JSON.stringify(defualtCollectionNames)
+      );
+      localStorage.setItem("finishedBooks", "[]");
+      localStorage.setItem("booksToRead", "[]");
+    }
+  }
   useEffect(() => {
     // get data from local storage
     let storage = {};
@@ -31,8 +42,9 @@ const App = () => {
     });
     _setDataStore(storage);
   }, []);
-  // defulualte collcetion even if deleted evrey collections
-  tools.initDefualtCollectionNames();
+
+  // create default collection
+  initDefualtCollectionNames();
 
   return (
     <div className={style.app}>

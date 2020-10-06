@@ -7,6 +7,7 @@ let apiCalls = 0;
 function Loading() {
   const [isLoading, setIsloading] = useState(false);
 
+  //TODO move all interceptor to a diffrent folder and decouple from loading component
   axios.interceptors.request.use(function (config) {
     apiCalls++;
     console.log("loading data ...");

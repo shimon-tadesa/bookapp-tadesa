@@ -28,14 +28,12 @@ function Sbutton(props) {
 
   return (
     <div>
-     
       <Button
         variant="contained"
         color="primary"
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        size="xsmall"
       >
         {props.children}
       </Button>

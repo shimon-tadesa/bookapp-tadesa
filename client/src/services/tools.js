@@ -12,15 +12,7 @@
     localStorage.removeItem(key);
   }
 
-  function initDefualtCollectionNames() {
-    let collectionNames =localStorage.getItem("collectionNames");
-    if (!collectionNames) {
-      let defualtCollectionNames = ["finishedBooks", "booksToRead"];
-      localStorage.setItem("collectionNames",JSON.stringify(defualtCollectionNames));
-      localStorage.setItem("finishedBooks" , '[]');
-      localStorage.setItem("booksToRead" , '[]');
-    }
-  }
+  
 
 
 
@@ -28,7 +20,6 @@
     readFromLocalStorage,
     setToLocalStorage,
     removeFromLocalStorage,
-    initDefualtCollectionNames
   };
 
   export default tools;
