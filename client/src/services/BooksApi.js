@@ -1,9 +1,22 @@
+
 import axios from "axios";
 
-const searchBooks = async (searchTerm = "", page = 1) => {
-  const response = await axios.get(
-    `http://openlibrary.org/search.json?q=${searchTerm}&page=${page}&limit=20`
-  );
+const searchBooks = async (searchTerm = "", author, page = 1) => {
+ 
+  const params = {
+    page: page,
+  };
+
+  if (author) {
+    params.title = searchTerm;
+    params.author = author;
+  } else {
+    params.q = searchTerm;
+  }
+
+  const response = await axios.get(`http://openlibrary.org/search.json`, {
+   params: params
+  });
 
   const data = response.data;
   const totalDocs = data.numFound;
@@ -11,10 +24,15 @@ const searchBooks = async (searchTerm = "", page = 1) => {
   let books = data.docs;
 
   books.forEach((item, index) => {
-    item.coverImageUrl = item.cover_i
-      ? `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg`
-      : "https://www.westernheights.k12.ok.us/wp-content/uploads/2020/01/No-Photo-Available.jpg";
-    item.id = new Date() + index;
+    if (item.cover_i) {
+      item.coverImageUrl = `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg`;
+      item.id = item.cover_i;
+    } else {
+      item.coverImageUrl =
+        "https://www.westernheights.k12.ok.us/wp-content/uploads/2020/01/No-Photo-Available.jpg";
+      //TODO use uuid lib insted
+      item.id = new Date() + index;
+    }
   });
 
   let temp = {
@@ -27,3 +45,4 @@ const searchBooks = async (searchTerm = "", page = 1) => {
 export default {
   searchBooks,
 };
+

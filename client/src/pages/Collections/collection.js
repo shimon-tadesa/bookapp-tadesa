@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BookList from "../../components/bookList/bookList";
 import Input from "@material-ui/core/Input";
-import Button from "@material-ui/core/Button";
+import AddIcon from '@material-ui/icons/Add';
 
 function Collections(props) {
   const dataStore = props.dataStore;
@@ -81,13 +81,15 @@ function Collections(props) {
 
   return (
     <div className="collection-page">
-      <Button color="primary" onClick={createCollection}>
+      <AddIcon color="primary" onClick={createCollection}>
         Create Collction
-      </Button>
+      </AddIcon>
 
       <Input
+      className="inputFiled"
         value={newCollectionName}
         type="text"
+        placeholder="Add New Collection"
         onChange={(event) => {
           setNewCollctionName(event.target.value);
         }}

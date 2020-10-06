@@ -41,7 +41,10 @@
   border-radius: 6px;
   position: relative;
 }
-
+#inputSpace{
+  position: relative;
+  right: 27px;
+}
 .results {
   position: relative;
   display: flex;

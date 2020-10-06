@@ -12,6 +12,7 @@ export const BooksSearch = (props) => {
   const ontDataStoreChange = props.ontDataStoreChange;
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [authorName, setAuthorName] = useState(null);
   const [books, setBooks] = useState([]);
 
   const [activePage, setActivetPage] = useState(1);
@@ -22,10 +23,14 @@ export const BooksSearch = (props) => {
     setSearchTerm(e.target.value);
   };
 
+  const onAuthorNameChange = (e) => {
+    setAuthorName(e.target.value);
+  };
+
   const handlePageChange = (event, value) => {
     setActivetPage(value);
     console.log(`active page is ${value}`);
-    searchBook(searchTerm, value);
+    searchBook(searchTerm, authorName, value);
     document.documentElement.scrollTop = 0;
   };
 
@@ -33,10 +38,10 @@ export const BooksSearch = (props) => {
     document.getElementById("input-feld").value = "";
   };
 
-  async function searchBook(searchTerm, page) {
+  async function searchBook(searchTerm, authorName, page) {
     try {
       setBooks([]);
-      const data = await apiData.searchBooks(searchTerm, page);
+      const data = await apiData.searchBooks(searchTerm, authorName, page);
       console.log(data);
       setBooks(data.books);
       setBookCount(data.numOfBooks);
@@ -47,7 +52,7 @@ export const BooksSearch = (props) => {
   }
 
   async function search(e) {
-    searchBook(searchTerm, 1);
+    searchBook(searchTerm, authorName, 1);
   }
 
   const addBookToList = (book, listName) => {
@@ -68,8 +73,9 @@ export const BooksSearch = (props) => {
 
   return (
     <div className="search-page">
-      <section>
+      <div>
         <h1 id="header">Book App</h1>
+        <span id="inputSpace">
         <Input
           type="text"
           onChange={onSearchTermChange}
@@ -82,10 +88,23 @@ export const BooksSearch = (props) => {
           }}
           placeholder="Search Book"
         />
+       </span>
+
+        <Input
+          type="text"
+          placeholder="Author Name"
+          onChange={onAuthorNameChange}
+          id="auhor-input-feld"
+          onKeyUp={(e) => {
+            if (e.key == "Enter") {
+              search(e);
+            }
+          }}
+        />
         <Button variant="contained" id="search-button" onClick={search}>
           Search
         </Button>
-      </section>
+      </div>
 
       <div className="results">
         {books.map((book, index) => (

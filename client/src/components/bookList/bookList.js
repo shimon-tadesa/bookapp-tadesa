@@ -6,6 +6,7 @@ import "./bookList.css";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import SmenuButton from "./../../components/SMenuButton/SMenuButton";
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 function BookList(props) {
   const [newListName, setNewListName] = useState("");
@@ -16,17 +17,19 @@ function BookList(props) {
         <div>
           <div>
             <h1>{props.bookList.title}</h1>
-            <Button
+            <BorderColorIcon
               color="primary"
               onClick={() =>
                 props.onListRename(props.bookList.title, newListName)
               }
             >
               Rename
-            </Button>
+            </BorderColorIcon>
             <Input
               type="text"
+              className="inputFiled"
               value={newListName}
+              placeholder="Change Name"
               onChange={(e) => setNewListName(e.target.value)}
             />
 
@@ -36,7 +39,7 @@ function BookList(props) {
               component="span"
               onClick={() => props.onListDelete(props.bookList.title)}
             >
-              <DeleteIcon />
+              <DeleteIcon  id="delete-button"/>
             </IconButton>
           </div>
           <div className="book-list">
@@ -51,7 +54,7 @@ function BookList(props) {
                         props.onBookDelete(props.bookList.title, book)
                       }
                     >
-                      Delete Book
+                      Delete 
                     </Button>
                     <SmenuButton
                       options={collectionNames}
@@ -59,7 +62,7 @@ function BookList(props) {
                         props.onMoveBook(props.bookList.title, selected, book);
                       }}
                     >
-                      move book
+                      Move 
                     </SmenuButton>
                   </div>
                 </Book>
