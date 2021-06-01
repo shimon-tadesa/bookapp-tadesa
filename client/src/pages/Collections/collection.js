@@ -86,7 +86,7 @@ function Collections(props) {
       </AddIcon>
 
       <Input
-      className="inputFiled"
+      id="inputFiled"
         value={newCollectionName}
         type="text"
         placeholder="Add New Collection"

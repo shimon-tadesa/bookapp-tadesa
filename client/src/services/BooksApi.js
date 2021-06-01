@@ -1,5 +1,6 @@
 
 import axios from "axios";
+// import coverImg from "../pages/BooksSearch/photo/"
 
 const searchBooks = async (searchTerm = "", author, page = 1) => {
  
@@ -10,8 +11,10 @@ const searchBooks = async (searchTerm = "", author, page = 1) => {
   if (author) {
     params.title = searchTerm;
     params.author = author;
+    params.limit = 20;
   } else {
     params.q = searchTerm;
+    params.limit = 20;
   }
 
   const response = await axios.get(`http://openlibrary.org/search.json`, {
@@ -28,7 +31,7 @@ const searchBooks = async (searchTerm = "", author, page = 1) => {
       item.coverImageUrl = `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg`;
       item.id = item.cover_i;
     } else {
-      item.coverImageUrl =
+      item.coverImageUrl = 
         "https://www.westernheights.k12.ok.us/wp-content/uploads/2020/01/No-Photo-Available.jpg";
       //TODO use uuid lib insted
       item.id = new Date() + index;

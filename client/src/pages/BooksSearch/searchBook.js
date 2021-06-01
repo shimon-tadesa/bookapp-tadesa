@@ -10,6 +10,7 @@ import SmenuButton from "./../../components/SMenuButton/SMenuButton";
 export const BooksSearch = (props) => {
   const dataStore = props.dataStore;
   const ontDataStoreChange = props.ontDataStoreChange;
+  let arrayItems = [];
 
   const [searchTerm, setSearchTerm] = useState("");
   const [authorName, setAuthorName] = useState(null);
@@ -31,6 +32,7 @@ export const BooksSearch = (props) => {
     setActivetPage(value);
     console.log(`active page is ${value}`);
     searchBook(searchTerm, authorName, value);
+    setSearchTerm("");
     document.documentElement.scrollTop = 0;
   };
 
@@ -56,15 +58,31 @@ export const BooksSearch = (props) => {
   }
 
   const addBookToList = (book, listName) => {
-    let bookArray = dataStore[listName];
-    console.log(bookArray);
-    let isBookExist = bookArray.find((theBook) => theBook.id === book.id);
-    if (isBookExist) {
-      alert("book is already exist");
-    } else {
-      bookArray.push(book);
+    if(arrayItems.length > 0){
+      arrayItems.forEach((book) => {
+        return book;
+      });
+      let bookArray = dataStore[listName];
+      console.log(bookArray);
+      let isBookExist = bookArray.find((theBook) => theBook.id === book.id);
+      if (isBookExist) {
+        alert("book is already exist");
+      } else {
+        bookArray.push(book);
+      }
+      ontDataStoreChange(dataStore);
     }
-    ontDataStoreChange(dataStore);
+  };
+
+  const onSelectFew = (item) => {
+    console.log(`click on book`);
+    if (item) {
+      arrayItems.push(item);
+
+      arrayItems.forEach((item) => {
+        return item;
+      });
+    }
   };
 
   const collectionNames = dataStore.collectionNames.map((title) => {
@@ -76,19 +94,19 @@ export const BooksSearch = (props) => {
       <div>
         <h1 id="header">Book App</h1>
         <span id="inputSpace">
-        <Input
-          type="text"
-          onChange={onSearchTermChange}
-          id="input-feld"
-          onFocus={clearFiled}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              search(e);
-            }
-          }}
-          placeholder="Search Book"
-        />
-       </span>
+          <Input
+            type="text"
+            onChange={onSearchTermChange}
+            id="input-feld"
+            onFocus={clearFiled}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                search(e);
+              }
+            }}
+            placeholder="Search Book"
+          />
+        </span>
 
         <Input
           type="text"
@@ -108,7 +126,7 @@ export const BooksSearch = (props) => {
 
       <div className="results">
         {books.map((book, index) => (
-          <Book key={index} bookData={book}>
+          <Book key={index} bookData={book} selectFew={() => onSelectFew(book)}>
             <SmenuButton
               options={collectionNames}
               onMenuSelect={(selectedOption) => {

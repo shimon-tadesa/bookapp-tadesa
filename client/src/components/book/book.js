@@ -1,5 +1,6 @@
 import React from "react";
 import "./book.css";
+import Checkbox from "@material-ui/core/Checkbox";
 
 function Book(props) {
   const book = props.bookData;
@@ -12,6 +13,15 @@ function Book(props) {
         <li>Year: {book.first_publish_year}</li>
         <li>Author: {book.author_name}</li>
       </ul>
+      <form>
+        <Checkbox
+          color="primary"
+          name="vehicle1"
+          onChange={props.selectFew}
+          value={"books"}
+        />
+      </form>
+
       {props.children}
     </div>
   );

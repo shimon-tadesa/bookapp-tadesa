@@ -17,9 +17,10 @@ const App = () => {
       localStorage[key] = JSON.stringify(dataStore[key]);
     });
 
-    // update dataStorage state in app.js
+    // 2.update dataStorage state in app.js
     _setDataStore({ ...dataStore });
     console.log("updated");
+    
   };
 
   function initDefualtCollectionNames() {
@@ -35,10 +36,11 @@ const App = () => {
     }
   }
   useEffect(() => {
-    // get data from local storage
+    
     let storage = {};
     Object.keys(localStorage).forEach((key) => {
       storage[key] = JSON.parse(localStorage.getItem(key));
+      console.log(storage[key]);
     });
     _setDataStore(storage);
   }, []);

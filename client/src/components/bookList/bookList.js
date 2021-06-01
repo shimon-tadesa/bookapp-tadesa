@@ -27,7 +27,7 @@ function BookList(props) {
             </BorderColorIcon>
             <Input
               type="text"
-              className="inputFiled"
+              id="inputFiled"
               value={newListName}
               placeholder="Change Name"
               onChange={(e) => setNewListName(e.target.value)}
@@ -48,6 +48,7 @@ function BookList(props) {
                 <Book key={index} bookData={book}>
                   <div className="btn-group">
                     <Button
+                    id="listButtonDelete"
                       variant="contained"
                       color="primary"
                       onClick={() =>
@@ -64,6 +65,7 @@ function BookList(props) {
                     >
                       Move 
                     </SmenuButton>
+                   
                   </div>
                 </Book>
               );

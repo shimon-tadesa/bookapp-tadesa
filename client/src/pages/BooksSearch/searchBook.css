@@ -5,9 +5,15 @@
 }
 #header {
   color: rgba(0, 0, 0, 0.714);
-  font-weight: 800;
+  font-weight: 600;
   font-family: ui-monospace;
   height: 44px;
+  font-size: 40px;
+}
+#header:hover {
+  color: black;
+  transition: 1s;
+  font-weight: 800;
 }
 
 .book-card {
@@ -26,13 +32,19 @@
 }
 
 #search-button {
-  background-color: #2f2f3f;
+  background-color: #323235;
   padding: 4px;
   position: relative;
   left: 30px;
   border-radius: 8px;
   color: white;
   font-weight: 200;
+  height: 39px;
+  width: 86px;
+}
+#search-button:hover{
+  background-color: black;
+  transition: 2s;
 }
 
 #input-feld {
@@ -40,8 +52,20 @@
   height: 21px;
   border-radius: 6px;
   position: relative;
+  font-weight: 400;
+  color: white;
 }
-#inputSpace{
+
+#auhor-input-feld {
+  width: 264px;
+  height: 21px;
+  border-radius: 6px;
+  position: relative;
+  font-weight: 400;
+  color: white;
+}
+
+#inputSpace {
   position: relative;
   right: 27px;
 }
@@ -76,4 +100,7 @@
 .search-pagination {
   display: inline-flex;
   margin-top: 30px;
+}
+#addButton{
+  background-color: #4cae50;
 }

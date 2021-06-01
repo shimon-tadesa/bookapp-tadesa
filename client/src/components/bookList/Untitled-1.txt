@@ -1,0 +1,184 @@
+
+
+
+const print =function(msg){
+    msg();
+    console.log(msg);
+
+}
+
+
+
+const getName=function(){
+    return "asher"
+}
+
+const getLastName=function(){
+   const  lastName="tadesa";
+   console.log("i am working");
+}
+
+
+let name ="shimon";
+
+1.print(name);   // shimon  1.name => "shimon"  2.print("shimo")
+2.print("koko"); // koko   2.print("koko")
+
+3.print(getName()) // asher      1.getName() => "asher"   2.print("asher")  
+4.print(getName)     1. getName => function(){return "asher"}    2.print(function(){return "asher"})   
+
+
+
+
+5.print(getLastName())//    1.getLastName() => undefiend/null   2.print(undefiend)  "undefiend"
+
+
+
+
+
+
+function defenition
+=---------------------------
+
+
+function test (){
+
+}
+const test = function(){
+
+}
+const asher =test;
+
+ 
+const test = function asher (){
+console.log("koko");
+}
+
+test();
+asher();
+
+
+
+
+async function do(){
+
+   1. await axoi......
+    2.console.log("get response from server");
+  3.await axio bbb
+  await axio
+}
+
+
+async function start(){
+   await do();
+    console.log("done")
+}
+
+start();
+// done;
+//get response
+
+
+
+
+
+
+
+//be refrence by value
+
+
+function test  (name){
+    name = "kokoriko"
+    console.log(name)
+}
+
+
+test();  //kokoriko
+
+
+test("asher"); //kokoriko
+
+
+const n ="shimon";
+test(n); // kokoriko
+console.log(n); //shimon
+==========================================
+
+
+function test  (name,cc){
+ console.log(name);
+ cc(); 
+}
+
+
+let bb =function(){
+    console.log("my name is bb");
+}
+bb= "dsadas"
+bb= 343433
+bb = {sdsd:sdsd}
+bb= function(){}
+
+parm = bb();
+test("asher",bb());
+
+// asher
+//"my name is bb"
+
+
+//asher
+//
+
+
+setToLocalStorage(,value){
+
+}
+
+setToLocalStorage(bookName,book)
+
+
+
+
+
+
+<div onClick="console.log('moshe')">
+
+<div onClick="console.log('ayosisher')">
+
+<div onClick="console.log('avi')">
+
+<div onClick="console.log('asher');event.stopProprogation">
+<button    ></button>
+</div
+</div
+</div
+</div
+
+
+//123
+//asher
+//avi
+//ayosisher
+//moshe
+
+
+let x = [{name:{first:kk,last:'sddds'}},lastName:"tadesa"},{name:"asher",lastName:"tadesa"},{name:"asher",lastName:"tadesa"},{name:"asher",lastName:"tadesa"}]
+
+ x.map(item=> {item.name}))
+ b//  [{first:kk,last:'sddds'},"asher","asher","asher"]
+
+
+<side-bar >
+
+<div>ראשי</div>
+<div>ראשי</div>
+<div>ראשי</div>
+</side-bar>
+
+<carussle  data={images} auto navition="true">
+<img>
+
+<img>
+
+<img>
+</curssel>

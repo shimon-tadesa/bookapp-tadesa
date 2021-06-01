@@ -17,3 +17,14 @@
   font-size: 8px;
   margin-right: 5px;
 }
+#delete-button{
+  color: rgb(194, 45, 45);
+}
+#inputFiled{
+  color: white;
+  font-weight: 400;
+}
+
+#listButtonDelete{
+  background-color: red;
+}
