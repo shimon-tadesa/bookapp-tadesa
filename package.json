@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "- [Getting Started](#getting-started)\r - [Your mission should you choose to accept it is as follows](#your-mission-should-you-choose-to-accept-it-is-as-follows)\r - [Assignment](#assignment)\r   - [Bonus](#bonus)\r - [Guidelines](#guidelines)\r - [Submissions](#submissions)\r ---",
   "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -16,8 +19,5 @@
   "bugs": {
     "url": "https://github.com/shimon-tadesa/Wix-Books-project/issues"
   },
-  "homepage": "https://github.com/shimon-tadesa/Wix-Books-project#readme",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "homepage": "https://github.com/shimon-tadesa/Wix-Books-project#readme"
 }
