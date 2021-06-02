@@ -1,0 +1,19 @@
+{
+  "name": "books-project",
+  "version": "1.0.0",
+  "description": "- [Getting Started](#getting-started)\r - [Your mission should you choose to accept it is as follows](#your-mission-should-you-choose-to-accept-it-is-as-follows)\r - [Assignment](#assignment)\r   - [Bonus](#bonus)\r - [Guidelines](#guidelines)\r - [Submissions](#submissions)\r ---",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimon-tadesa/Wix-Books-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shimon-tadesa/Wix-Books-project/issues"
+  },
+  "homepage": "https://github.com/shimon-tadesa/Wix-Books-project#readme"
+}
