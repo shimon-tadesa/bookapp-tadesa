@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js"
-   
   },
   "repository": {
     "type": "git",
@@ -17,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/shimon-tadesa/Wix-Books-project/issues"
   },
-  "homepage": "https://github.com/shimon-tadesa/Wix-Books-project#readme"
+  "homepage": "https://github.com/shimon-tadesa/Wix-Books-project#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
