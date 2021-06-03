@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "- [Getting Started](#getting-started)\r - [Your mission should you choose to accept it is as follows](#your-mission-should-you-choose-to-accept-it-is-as-follows)\r - [Assignment](#assignment)\r   - [Bonus](#bonus)\r - [Guidelines](#guidelines)\r - [Submissions](#submissions)\r ---",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-client": "cd client && npm install && npm run build",
+    "deploy": "cd client && npm run deploy-to-server",
+    "build-server": "cd server && npm install",
+    "start": "cd server && node server.js",    
+    "postinstall": "npm run build-client && npm run deploy && npm run build-server"
   },
   "repository": {
     "type": "git",
