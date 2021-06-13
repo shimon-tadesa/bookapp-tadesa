@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import * as style from "./App.module.scss";
+// import * as style from "./App.module.scss";
 import { Switch, Route } from "react-router-dom";
 import Collections from "./pages/Collections/collection";
 import { BooksSearch } from "./pages/BooksSearch/searchBook";
-import { Header } from "./components/Header";
+import { NavBar } from "./components/NavBar/index";
 import Loading from "./components/loading/loading";
+import "./App.css";
 
 const App = () => {
   const [dataStore, _setDataStore] = useState({ collectionNames: [] });
@@ -20,7 +21,6 @@ const App = () => {
     // 2.update dataStorage state in app.js
     _setDataStore({ ...dataStore });
     console.log("updated");
-    
   };
 
   function initDefualtCollectionNames() {
@@ -36,7 +36,6 @@ const App = () => {
     }
   }
   useEffect(() => {
-    
     let storage = {};
     Object.keys(localStorage).forEach((key) => {
       storage[key] = JSON.parse(localStorage.getItem(key));
@@ -49,9 +48,9 @@ const App = () => {
   initDefualtCollectionNames();
 
   return (
-    <div className={style.app}>
-      <Header />
-      <main>
+    <>
+      <NavBar />
+      <div className="pages">
         <Switch>
           <Route
             exact
@@ -75,10 +74,10 @@ const App = () => {
             )}
           />
         </Switch>
-      </main>
 
-      <Loading />
-    </div>
+        <Loading />
+      </div>
+    </>
   );
 };
 

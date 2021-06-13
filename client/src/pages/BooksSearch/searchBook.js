@@ -7,6 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import Button from "@material-ui/core/Button";
 import SmenuButton from "./../../components/SMenuButton/SMenuButton";
 
+
 export const BooksSearch = (props) => {
   const dataStore = props.dataStore;
   const ontDataStoreChange = props.ontDataStoreChange;
@@ -114,7 +115,7 @@ export const BooksSearch = (props) => {
           onChange={onAuthorNameChange}
           id="auhor-input-feld"
           onKeyUp={(e) => {
-            if (e.key == "Enter") {
+            if (e.key === "Enter") {
               search(e);
             }
           }}
