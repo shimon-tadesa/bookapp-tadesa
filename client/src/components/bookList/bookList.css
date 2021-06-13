@@ -3,7 +3,9 @@
   overflow-x: auto;
   justify-content: center;
 }
-
+.book-List h1 {
+  font-size: 20px;
+}
 .book-list .book {
   margin-left: 10px;
   margin-bottom: 20px;
