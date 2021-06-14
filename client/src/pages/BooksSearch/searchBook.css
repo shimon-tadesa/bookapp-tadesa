@@ -9,6 +9,8 @@
   font-family: ui-monospace;
   height: 44px;
   font-size: 40px;
+  position: relative;
+  bottom: 34px;
 }
 #header:hover {
   color: black;
@@ -35,7 +37,6 @@
   background-color: #323235;
   padding: 4px;
   position: relative;
-  left: 30px;
   border-radius: 8px;
   color: white;
   font-weight: 200;
@@ -104,3 +105,4 @@
 #addButton{
   background-color: #4cae50;
 }
+
