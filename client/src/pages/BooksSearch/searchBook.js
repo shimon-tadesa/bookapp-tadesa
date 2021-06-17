@@ -92,8 +92,8 @@ export const BooksSearch = (props) => {
 
   return (
     <div className="search-page">
-      <div>
         <h1 id="header">Book App</h1>
+      <section className="input-button-container">
         <span id="inputSpace">
           <Input
             type="text"
@@ -123,7 +123,7 @@ export const BooksSearch = (props) => {
         <Button variant="contained" id="search-button" onClick={search}>
           Search
         </Button>
-      </div>
+      </section>
 
       <div className="results">
         {books.map((book, index) => (

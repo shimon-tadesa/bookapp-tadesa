@@ -43,7 +43,7 @@
   height: 39px;
   width: 86px;
 }
-#search-button:hover{
+#search-button:hover {
   background-color: black;
   transition: 2s;
 }
@@ -102,7 +102,28 @@
   display: inline-flex;
   margin-top: 30px;
 }
-#addButton{
+#addButton {
   background-color: #4cae50;
 }
+
+@media screen and (max-width: 768px) {
+  .input-button-container {
+    position: relative;
+  }
+
+  #search-button {
+    margin-bottom: 19px;
+    position: relative;
+    top: 85px;
+  }
+
+  .results {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 83px;
+  }
+}
+
 
