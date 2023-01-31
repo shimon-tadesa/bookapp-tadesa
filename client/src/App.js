@@ -50,7 +50,7 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <div className="pages">
+      <div className="pagess">
         <Switch>
           <Route
             exact
